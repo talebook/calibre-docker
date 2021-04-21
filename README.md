@@ -1,2 +1,2 @@
 # calibre2-docker
-docker image for calibre v2.x
+a base docker image with calibre v2.x for talebook/calibre-webserver
