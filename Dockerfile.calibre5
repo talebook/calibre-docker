@@ -10,3 +10,5 @@ RUN apt-get update && \
     apt-get install -y calibre=5.12.0+dfsg-1+deb11u1
 
 RUN mv /tmp/sources.list /etc/apt/sources.list
+
+ENTRYPOINT ["/bin/bash"]
