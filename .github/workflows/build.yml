@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - add-workflow-actions
 
 jobs:
   docker:
@@ -68,3 +67,4 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/ppc64le
           push: true
           tags: ${{ steps.prep.outputs.tags }}
+
