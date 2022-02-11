@@ -7,6 +7,6 @@ RUN apt-get update && \
 
 # debian里安装的pyqt5版本v5.15.2有问题，需要更新为5.15.3（issue talebook/talebook#124）
 RUN python3 -m pip install --upgrade pip
-RUN pip3 install pyqt5==5.15.3
+RUN pip3 install -I pyqt5==5.15.3
 
 ENTRYPOINT ["/bin/bash"]
