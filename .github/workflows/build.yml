@@ -41,6 +41,9 @@ jobs:
         with:
           platforms: all
 
+      - name: Available platforms
+        run: echo ${{ steps.qemu.outputs.platforms }}
+
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@master
@@ -64,7 +67,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/ppc64le
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.prep.outputs.tags }}
 
