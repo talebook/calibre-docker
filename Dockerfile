@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y calibre=5.12.0+dfsg-1+deb11u1
 
 # debian里安装的pyqt5版本v5.15.2有问题，需要更新为5.15.3（issue talebook/talebook#124）
-RUN python3 -m pip install --upgrade pip
-RUN pip3 install -I pyqt5==5.15.3
+# ARM下安装失败，先仅安装X86
+RUN if [ $(uname -m) == "x86_64" ]; then pip3 install -I pyqt5==5.15.3; fi
 
 ENTRYPOINT ["/bin/bash"]
