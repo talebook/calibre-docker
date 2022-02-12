@@ -2,7 +2,8 @@ name: 'buildx docker images'
 
 on:
   push:
-    tags: ["v*"]
+    tags:
+      - "v*"
 
 jobs:
   docker:
