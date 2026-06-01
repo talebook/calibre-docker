@@ -6,13 +6,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 # 安装基础系统（包含 PyQt5 系统包）
+# nginx 固定 >=1.26.3-3+deb13u5 以修复 CVE-2026-42945（ngx_http_rewrite_module 堆溢出 RCE/DoS）
 RUN apt-get update && \
     apt-get install -y \
         tzdata \
         python3 \
         python3-pip \
         python3-venv \
-        nginx \
+        "nginx>=1.26.3-3+deb13u5" \
         supervisor \
         sqlite3 \
         curl \
@@ -20,12 +21,10 @@ RUN apt-get update && \
         unzip \
         git \
         ca-certificates \
-        # PyQt5 系统包
         python3-pyqt5 \
         python3-pyqt5.qtwebengine \
         python3-pyqt5.qtsql \
         python3-pyqt5.qtmultimedia \
-        # Calibre 相关依赖
         python3-dateutil \
         python3-cssselect \
         python3-lxml \
