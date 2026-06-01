@@ -20,12 +20,10 @@ RUN apt-get update && \
         unzip \
         git \
         ca-certificates \
-        # PyQt5 系统包
         python3-pyqt5 \
         python3-pyqt5.qtwebengine \
         python3-pyqt5.qtsql \
         python3-pyqt5.qtmultimedia \
-        # Calibre 相关依赖
         python3-dateutil \
         python3-cssselect \
         python3-lxml \
@@ -36,6 +34,12 @@ RUN apt-get update && \
         fonts-liberation && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# 校验 nginx 版本，确保已修复 CVE-2026-42945（ngx_http_rewrite_module 堆溢出 RCE/DoS）
+RUN ver="$(dpkg-query -W -f='${Version}' nginx)" && \
+    echo "Installed nginx: $ver" && \
+    dpkg --compare-versions "$ver" ge 1.26.3-3+deb13u5 || \
+    { echo "ERROR: nginx $ver 仍受 CVE-2026-42945 影响，需 >= 1.26.3-3+deb13u5" && exit 1; }
 
 # 根据架构安装 Calibre
 RUN echo "Installing Calibre via apt for $TARGETARCH $TARGETVARIANT" && \
