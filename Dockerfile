@@ -6,14 +6,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 # 安装基础系统（包含 PyQt5 系统包）
-# nginx 固定 >=1.26.3-3+deb13u5 以修复 CVE-2026-42945（ngx_http_rewrite_module 堆溢出 RCE/DoS）
 RUN apt-get update && \
     apt-get install -y \
         tzdata \
         python3 \
         python3-pip \
         python3-venv \
-        "nginx>=1.26.3-3+deb13u5" \
+        nginx \
         supervisor \
         sqlite3 \
         curl \
@@ -35,6 +34,12 @@ RUN apt-get update && \
         fonts-liberation && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# 校验 nginx 版本，确保已修复 CVE-2026-42945（ngx_http_rewrite_module 堆溢出 RCE/DoS）
+RUN ver="$(dpkg-query -W -f='${Version}' nginx)" && \
+    echo "Installed nginx: $ver" && \
+    dpkg --compare-versions "$ver" ge 1.26.3-3+deb13u5 || \
+    { echo "ERROR: nginx $ver 仍受 CVE-2026-42945 影响，需 >= 1.26.3-3+deb13u5" && exit 1; }
 
 # 根据架构安装 Calibre
 RUN echo "Installing Calibre via apt for $TARGETARCH $TARGETVARIANT" && \
